@@ -1,0 +1,16 @@
+{
+  "name": "phaserfromscratchtuto2",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "parcel src/index.html -p 8000",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "parcel-bundler": "^1.9.4",
+    "phaser": "^3.55.2"
+  }
+}
