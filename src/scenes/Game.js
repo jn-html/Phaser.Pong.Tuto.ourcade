@@ -1,4 +1,5 @@
 import Phaser from 'phaser'
+import WebFontFile from './WebFontFile';
 
 export default class Game extends Phaser.Scene {
 
@@ -10,7 +11,8 @@ export default class Game extends Phaser.Scene {
   }
 
   preload() {
-
+    const fonts = new WebFontFile(this.load, 'Press Start 2P')
+    this.load.addFile(fonts)
   }
 
   create() {
@@ -37,7 +39,8 @@ export default class Game extends Phaser.Scene {
     this.physics.add.collider(this.paddleRight ,this.ball)
 
     const scoreStyle = {
-      fontSize: 38
+      fontSize: 38,
+      fontFamily: '"Press Start 2P"'
     }
 
     this.leftScoreLabel = this.add.text(300, 125, '0', scoreStyle).setOrigin(0.5, 0.5)
