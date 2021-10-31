@@ -1,5 +1,10 @@
 import Phaser from 'phaser'
+
 import WebFontFile from './WebFontFile';
+
+import { GameBackground } from '../consts/SceneKeys';
+
+import * as Colors from '../consts/Colors'
 
 export default class Game extends Phaser.Scene {
 
@@ -17,13 +22,12 @@ export default class Game extends Phaser.Scene {
 
   create() {
 
-    this.scene.run('game-background')
-    // prevent the ball from passing under the line
-    this.scene.sendToBack('game-background')
+    this.scene.run(GameBackground)
+    this.scene.sendToBack(GameBackground)
 
     this.physics.world.setBounds(-100, 0, 1000, 500)
 
-    this.ball = this.add.circle(400, 250, 10, 0xffffff, 1)
+    this.ball = this.add.circle(400, 250, 10, Colors.White, 1)
     this.physics.add.existing(this.ball)
     this.ball.body.setBounce(1,1)
 
@@ -31,10 +35,10 @@ export default class Game extends Phaser.Scene {
 
     this.resetBall()
 
-    this.paddleLeft = this.add.rectangle(50, 250, 30, 100, 0xffffff, 1)
+    this.paddleLeft = this.add.rectangle(50, 250, 30, 100, Colors.White, 1)
     this.physics.add.existing(this.paddleLeft, true)
     
-    this.paddleRight = this.add.rectangle(750, 250, 30, 100, 0xffffff, 1)
+    this.paddleRight = this.add.rectangle(750, 250, 30, 100, Colors.White, 1)
     this.physics.add.existing(this.paddleRight, true)
     
     /**@type {Phaser.Physics.Arcade.Body} */
@@ -56,8 +60,15 @@ export default class Game extends Phaser.Scene {
 
   update() {
     
-    /**@type {Phaser.Physics.Arcade.Body} */
+    this.processPlayerInput()
+    this.updateAI()
+    this.checkScore()
     
+  }
+
+  
+  processPlayerInput() {
+    /**@type {Phaser.Physics.Arcade.Body} */
     const body = this.paddleLeft.body
 
     if (this.cursors.up.isDown) {
@@ -68,7 +79,9 @@ export default class Game extends Phaser.Scene {
       this.paddleLeft.y += 10
       body.updateFromGameObject()
     }
+  }
 
+  updateAI() {
     const diff = this.ball.y - this.paddleRight.y
     if (Math.abs(diff) < 10) {
       return
@@ -92,7 +105,9 @@ export default class Game extends Phaser.Scene {
 
     this.paddleRight.y += this.paddleRightVelocity.y
     this.paddleRight.body.updateFromGameObject()
+  }
 
+  checkScore() {
     if (this.ball.x < -30) {
       // scored on left side
       this.resetBall()

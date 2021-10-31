@@ -1,5 +1,7 @@
 import Phaser from 'phaser';
 
+import * as Colors from '../consts/Colors'
+
 
 
 export default class GameBackground extends Phaser.Scene {
@@ -9,14 +11,12 @@ export default class GameBackground extends Phaser.Scene {
 
   create() {
 
-    const whiteColor = 0xffffff
-
-    this.add.line(400, 250, 0, 0, 0, 500, whiteColor, 1)
+    this.add.line(400, 250, 0, 0, 0, 500, Colors.White, 1)
     .setLineWidth(2.5, 2.5)
     // .setOrigin(0.5, 0.5)
 
     this.add.circle(400, 250, 50)
-    .setStrokeStyle(5, whiteColor, 1)
+    .setStrokeStyle(5, Colors.White, 1)
   }
   
 }
