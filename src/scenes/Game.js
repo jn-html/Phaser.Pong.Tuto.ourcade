@@ -29,11 +29,13 @@ export default class Game extends Phaser.Scene {
 
     this.ball = this.add.circle(400, 250, 10, Colors.White, 1)
     this.physics.add.existing(this.ball)
+    // ball is a box instead of circle, so setCircle (radius 10)
+    this.ball.body.setCircle(10)
     this.ball.body.setBounce(1,1)
 
     this.ball.body.setCollideWorldBounds(true, 1, 1)
 
-    this.resetBall()
+    // this.resetBall()
 
     this.paddleLeft = this.add.rectangle(50, 250, 30, 100, Colors.White, 1)
     this.physics.add.existing(this.paddleLeft, true)
@@ -55,6 +57,10 @@ export default class Game extends Phaser.Scene {
     this.rightScoreLabel = this.add.text(500, 375, '0', scoreStyle).setOrigin(0.5, 0.5)
     
     this.cursors = this.input.keyboard.createCursorKeys()
+    
+    this.time.delayedCall(1000, () => {
+      this.resetBall()
+    })
     
   }
 
