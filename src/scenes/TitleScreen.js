@@ -12,7 +12,7 @@ export default class TitleScreen extends Phaser.Scene {
   }
 
   create() {
-    const title = this.add.text(400, 250, 'Old School \n Air Hockey', {
+    const title = this.add.text(400, 250, 'Old School \n\n Air Hockey\n\n\n', {
       fontSize: 38,
       fontFamily: '"Press Start 2P"'
     })
@@ -23,7 +23,6 @@ export default class TitleScreen extends Phaser.Scene {
     }).setOrigin(0.5, -3.5);
 
     this.input.keyboard.on('keydown-SPACE', () => {
-      console.log('space pressed');
       this.scene.start(Game)
     })
 
