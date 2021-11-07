@@ -1,10 +1,10 @@
 import Phaser from 'phaser'
 
-
 import { GameBackground, GameOver } from '../consts/SceneKeys';
-import { PressStart2P } from '../consts/Fonts';
 
-import * as Colors from '../consts/Colors'
+import { PressStart2P } from '../consts/Fonts';
+import * as Colors from '../consts/Colors';
+import *as AudioKeys from '../consts/AudioKeys';
 
 const GameState = {
   Running: 'running',
@@ -37,8 +37,10 @@ export default class Game extends Phaser.Scene {
     this.physics.add.existing(this.ball)
     this.ball.body.setCircle(10)
     this.ball.body.setBounce(1,1)
+    this.ball.body.setMaxSpeed(4000)
 
     this.ball.body.setCollideWorldBounds(true, 1, 1)
+    this.ball.body.onWorldBounds = true
 
     this.paddleLeft = this.add.rectangle(50, 250, 30, 100, Colors.White, 1)
     this.physics.add.existing(this.paddleLeft, true)
@@ -48,8 +50,10 @@ export default class Game extends Phaser.Scene {
     
     /**@type {Phaser.Physics.Arcade.Body} */
 
-    this.physics.add.collider(this.paddleLeft ,this.ball)
-    this.physics.add.collider(this.paddleRight ,this.ball)
+    this.physics.add.collider(this.paddleLeft ,this.ball, this.handlePaddleBallCollision, undefined, this)
+    this.physics.add.collider(this.paddleRight ,this.ball, this.handlePaddleBallCollision, undefined, this)
+
+    this.physics.world.on('worldbounds', this.handleBallWorldBoundsCollision, this)
 
     const scoreStyle = {
       fontSize: 38,
@@ -77,6 +81,26 @@ export default class Game extends Phaser.Scene {
     this.updateAI()
     this.checkScore()
     
+  }
+
+  handleBallWorldBoundsCollision(body, up, down, left, right) {
+    if (left || right) {
+      return
+    }
+
+    this.sound.play(AudioKeys.PongPlop)
+  }
+
+  handlePaddleBallCollision(paddle, ball) {
+    this.sound.play(AudioKeys.PongBip)
+
+    /** @type {Phaser.Physics.Arcade.Body} */
+    const body = this.ball.body
+    const vel = body.velocity
+    vel.x *= 1.05
+    vel.y *= 1.05
+
+    body.setVelocity(vel.x, vel.y)
   }
 
   
