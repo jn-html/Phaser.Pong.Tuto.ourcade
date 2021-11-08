@@ -155,16 +155,14 @@ export default class Game extends Phaser.Scene {
     
     if (this.ball.x < leftBounds) {
       // scored on left side
-      // this.resetBall()
       this.incrementRightScore()
     }
     else if (this.ball.x > rightBounds) {
       // scored on the right side
-      // this.resetBall()
       this.incrementLeftScore()
     }
 
-    const maxScore = 1
+    const maxScore = 7
     if (this.leftScore >= maxScore) {
       // player won
       console.log('player won')
@@ -175,9 +173,9 @@ export default class Game extends Phaser.Scene {
       console.log('AI won')
       this.gameState = GameState.AIWOn
 
-    }
+    } 
 
-      if (!this.gameState === GameState.Running) {
+      if (this.gameState === GameState.Running) {
         this.resetBall()
       } 
       else {
